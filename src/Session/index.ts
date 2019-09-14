@@ -1,15 +1,15 @@
 /*
-* @adonisjs/session
-*
-* (c) Harminder Virk <virk@adonisjs.com>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * @adonisjs/session
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 /// <reference path="../../adonis-typings/session.ts" />
 
-import * as uuid from 'uuid'
+import { randomBytes } from 'crypto'
 import { Exception } from '@poppinss/utils'
 import { HttpContextContract } from '@poppinss/http-server'
 
@@ -73,13 +73,15 @@ export class Session implements SessionContract {
    * Returns the existing session id or creates one.
    */
   private _getSessionId (): string {
-    const sessionId = this._ctx.request.cookie(this._config.cookieName)
+    const sessionId =
+      this._ctx.request._qs[this._config.cookieName] &&
+      this._ctx.request.cookie(this._config.cookieName)
     if (sessionId) {
       return sessionId
     }
 
     this.fresh = true
-    return uuid.v4()
+    return randomBytes(16).toString('hex')
   }
 
   /**
@@ -167,7 +169,7 @@ export class Session implements SessionContract {
    * by `session.forget`
    */
   public pull (key: string, defaultValue?: any): any {
-    return ((value) => {
+    return (value => {
       this.forget(key)
       return value
     })(this.get(key, defaultValue))
@@ -182,8 +184,10 @@ export class Session implements SessionContract {
     this._ensureIsReady()
 
     const value = this._store.get(key, 0)
-    if (typeof (value) !== 'number') {
-      throw new Exception(`Cannot increment ${key}, since original value is not a number`)
+    if (typeof value !== 'number') {
+      throw new Exception(
+        `Cannot increment ${key}, since original value is not a number`,
+      )
     }
 
     this._store.set(key, value + steps)
@@ -198,8 +202,10 @@ export class Session implements SessionContract {
     this._ensureIsReady()
 
     const value = this._store.get(key, 0)
-    if (typeof (value) !== 'number') {
-      throw new Exception(`Cannot decrement ${key}, since original value is not a number`)
+    if (typeof value !== 'number') {
+      throw new Exception(
+        `Cannot decrement ${key}, since original value is not a number`,
+      )
     }
 
     this._store.set(key, value - steps)
@@ -222,13 +228,17 @@ export class Session implements SessionContract {
      */
     if (this._regenerate) {
       await this._driver.destroy(this.sessionId)
-      this.sessionId = uuid.v4()
+      this.sessionId = randomBytes(16).toString('hex')
     }
 
     /**
      * Update the cookie value
      */
-    this._ctx.response.cookie(this._config.cookieName, this.sessionId, this._config.cookie!)
+    this._ctx.response.cookie(
+      this._config.cookieName,
+      this.sessionId,
+      this._config.cookie!,
+    )
 
     const sessionValue = this._store.toString()
 
