@@ -74,7 +74,7 @@ export class Session implements SessionContract {
    */
   private _getSessionId (): string {
     const sessionId =
-      this._ctx.request._qs[this._config.cookieName] &&
+      this._ctx.request.get()[this._config.cookieName] &&
       this._ctx.request.cookie(this._config.cookieName)
     if (sessionId) {
       return sessionId
