@@ -2,13 +2,13 @@
   "name": "@adonisjs/session",
   "version": "1.0.28",
   "description": "Session provider for AdonisJs",
-  "main": "build/providers/SessionProvider.js",
+  "main": "providers/SessionProvider.js",
   "files": [
-    "build/src",
-    "build/adonis-typings",
-    "build/providers"
+    "src",
+    "adonis-typings",
+    "providers"
   ],
-  "typings": "./build/adonis-typings/index.d.ts",
+  "typings": "./adonis-typings/index.d.ts",
   "dependencies": {
     "@poppinss/utils": "^1.0.3",
     "@types/bson": "^4.0.0",
