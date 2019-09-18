@@ -4,9 +4,10 @@
   "description": "Session provider for AdonisJs",
   "main": "providers/SessionProvider.js",
   "files": [
-    "build/src",
-    "build/adonis-typings",
-    "build/providers"
+    "src",
+    "adonis-typings",
+    "providers",
+    "build"
   ],
   "typings": "./build/adonis-typings/index.d.ts",
   "dependencies": {
