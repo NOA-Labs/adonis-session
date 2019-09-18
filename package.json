@@ -2,7 +2,7 @@
   "name": "@adonisjs/session",
   "version": "1.0.28",
   "description": "Session provider for AdonisJs",
-  "main": "build/providers/SessionProvider.js",
+  "main": "providers/SessionProvider.js",
   "files": [
     "build/src",
     "build/adonis-typings",

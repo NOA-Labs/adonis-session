@@ -1,0 +1,1 @@
+../build/adonis-typings/index.js
