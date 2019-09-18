@@ -10,7 +10,7 @@
 */
 
 const _ = require('lodash')
-const uuid = require('uuid')
+const { randomBytes } = require('crypto')
 const debug = require('debug')('adonis:session')
 const GE = require('@adonisjs/generic-exceptions')
 const Store = require('./Store')
@@ -64,13 +64,13 @@ class Session {
    * @private
    */
   _getSessionId () {
-    const existingSessionId = this._request.cookie(this._key)
+    const existingSessionId = this._request.get()[this._key] && this._request.cookie(this._key)
     if (existingSessionId) {
       debug('existing session found for user')
       this._isNewSessionId = false
       return existingSessionId
     }
-    return uuid.v4()
+    return randomBytes(16).toString('hex')
   }
 
   /**
