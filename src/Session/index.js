@@ -64,7 +64,7 @@ class Session {
    * @private
    */
   _getSessionId () {
-    const existingSessionId = this._request.get()[this._key] && this._request.cookie(this._key)
+    const existingSessionId = this._request.get()[this._key] || this._request.cookie(this._key)
     if (existingSessionId) {
       debug('existing session found for user')
       this._isNewSessionId = false
