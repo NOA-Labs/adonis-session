@@ -64,7 +64,7 @@ class Session {
    * @private
    */
   _getSessionId () {
-    const existingSessionId = this._request.get()[this._key] || this._request.cookie(this._key)
+    const existingSessionId = this._request.get()[this._key] || this._request.plainCookie(this._key)
     if (existingSessionId) {
       debug('existing session found for user')
       this._isNewSessionId = false
@@ -87,7 +87,7 @@ class Session {
    */
   _touchSessionId (sessionId) {
     this._sessionId = sessionId
-    this._response.cookie(this._key, sessionId, this._options)
+    this._response.plainCookie(this._key, sessionId, this._options)
     debug('touching session to remain active')
   }
 
