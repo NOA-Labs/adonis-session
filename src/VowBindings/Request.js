@@ -36,7 +36,7 @@ module.exports = function (Request, Config) {
    */
   Request.before((requestInstance) => {
     requestInstance._session.toJSON().forEach((item) => {
-      requestInstance.cookie(item.key, item.value)
+      requestInstance.plainCookie(item.key, item.value)
     })
   })
 }

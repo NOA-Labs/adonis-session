@@ -18,9 +18,9 @@
  * The driver always has to be `memory`.
  */
 
-const uuid = require('uuid')
 const Store = require('./Store')
 const util = require('../../lib/util')
+const { randomBytes } = require('crypto')
 
 /**
  * Session client to set sessions as
@@ -35,7 +35,7 @@ class SessionClient {
     const { key } = util.getCookieOption(Config)
     const sessionValues = cookies[`${key}-values`] || null
 
-    this._sessionId = uuid.v4()
+    this._sessionId = randomBytes(16).toString('hex')
     this._key = key
     this._store = sessionValues ? new Store(sessionValues) : new Store()
   }
